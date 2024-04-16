@@ -244,7 +244,18 @@ with open(path,'r') as file:
                                 print("error")
                                 state=-1
                     case 7:         #!
-                        a=1
+                        if buffer[buffer_index] == 61:
+                            # !=
+                            print("T_ROp_NE")
+                            buffer_index += 1
+                        else:
+                            if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(
+                                    buffer[buffer_index]) == 9:
+                                print("T_LOp_NOT")
+                                state = 1
+                            else:
+                                print("error")
+                                state = -1
                     case 8:         #+
                         if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(buffer[buffer_index]) == 9:
                             print("T_AOp_PL")
@@ -253,7 +264,15 @@ with open(path,'r') as file:
                             print("error")
                             state=-1
                     case 9:         #-
-                        a=1
+                        if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(buffer[buffer_index]) == 9:
+                            print("T_AOp_MN")
+                        else:
+                            if ord(buffer[buffer_index])>=49 and ord(buffer[buffer_index])<=57:
+                                T_id+="-"
+                                state=3
+                            else:
+                                print("error")
+                                state=-1
                     case 10:        #*
                         if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(buffer[buffer_index]) == 9:
                             print("T_AOp_ML")

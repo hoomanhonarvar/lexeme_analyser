@@ -4,4 +4,5 @@ int a = " ali is a good boy " ;
 char b = 'b' ;
 // aldkjfasldfk jod;l hkfj,a wkajsdvakgadsgnjv,
 int a = "sdfjksdf sldfkjsd f sdlkfkj sdlfj iSLDifj "
-int a = asldjf + sldkfj ;
+int a = 0x234 + sldkfj ;
+print a = -23 ;
