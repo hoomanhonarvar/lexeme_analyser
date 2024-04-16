@@ -1,7 +1,7 @@
 import sys
 import pandas as pd
 # path=sys.argv[1]
-path="./input.pl"
+path="./test.c"
 
 
 
@@ -55,11 +55,13 @@ with open(path,'r') as file:
             while not end:
                 # print("this is", buffer[buffer_index], ".")
                 # print(state)
+                print("buffer ascii", ord(buffer[buffer_index]))
+                print("len buffer:", len(buffer))
+                print("buffer index: ", buffer_index)
+                print(buffer[buffer_index])
                 match state:
                     case 0:         #start state
-                        print("buffer ascii",ord(buffer[buffer_index]))
-                        print("len buffer:",len(buffer))
-                        print("buffer index: ",buffer_index)
+
                         #error
                         if buffer_index == len(buffer) :
                             state=-1
@@ -159,6 +161,7 @@ with open(path,'r') as file:
                             buffer_index+=1
                             state=23
                         #]
+                        print(ord(buffer[buffer_index]))
                         if ord(buffer[buffer_index])==93:
                             buffer_index+=1
                             state=24
@@ -182,6 +185,7 @@ with open(path,'r') as file:
 
 
                     case 2:         #letter
+                        print("hello")
                         T_id=T_id+buffer[buffer_index-1]
                         # print(T_id)
                         if buffer_index == len(buffer) :
@@ -197,7 +201,7 @@ with open(path,'r') as file:
                                     if i[0]==T_id:
                                         print(i[1])
                             T_id=""
-                            print(main_symbol_table)
+                            # print(main_symbol_table)
                             break
                         if ((ord(buffer[buffer_index])>=65 and ord(buffer[buffer_index])<=90) or (ord(buffer[buffer_index])>=97 and ord(buffer[buffer_index])<=122) or ord(buffer[buffer_index])==95):
                             state=2
@@ -213,7 +217,7 @@ with open(path,'r') as file:
                                     if i[0] == T_id:
                                         print(i[1])
                             T_id = ""
-                            print(main_symbol_table)
+                            # print(main_symbol_table)
 
                             state=0
 
@@ -378,66 +382,32 @@ with open(path,'r') as file:
                         state=0
                     #(
                     case 19:
-                        if ord(buffer[buffer_index])==32 or ord(buffer[buffer_index])==10 or ord(buffer[buffer_index])==9:
-                            print("T_LP")
-                            state=1
-                        else:
-                            print("error")
-                            state=-1
+                        print("T_LP")
+                        state = 0
                     #)
                     case 20:
-                        if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(
-                                buffer[buffer_index]) == 9:
-                            print("T_GP")
-                            state = 1
-                        else:
-                            print("error")
-                            state = -1
+                        print("T_GP")
+                        state = 0
                     #{
                     case 21:
-                        if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(
-                                buffer[buffer_index]) == 9:
-                            print("T_LC")
-                            state = 1
-                        else:
-                            print("error")
-                            state = -1
+                        print("T_LC")
+                        state = 0
                     #}
                     case 22:
-                        if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(
-                                buffer[buffer_index]) == 9:
-                            print("T_RC")
-                            state = 1
-                        else:
-                            print("error")
-                            state = -1
+                        print("T_RC")
+                        state = 0
                     #[
                     case 23:
-                        if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(
-                                buffer[buffer_index]) == 9:
-                            print("T_LB")
-                            state = 1
-                        else:
-                            print("error")
-                            state = -1
+                        print("T_LB")
+                        state = 0
                     #]
                     case 24:
-                        if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(
-                                buffer[buffer_index]) == 9:
-                            print("T_RB")
-                            state = 1
-                        else:
-                            print("error")
-                            state = -1
+                        print("T_RB")
+                        state = 0
                     #,
                     case 25:
-                        if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(
-                                buffer[buffer_index]) == 9:
-                            print("T_Comma")
-                            state = 1
-                        else:
-                            print("error")
-                            state = -1
+                        print("T_Comma")
+                        state = 0
 
                     #error
                     case _:
