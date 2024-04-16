@@ -132,6 +132,9 @@ with open(path,'r') as file:
                             T_id+=buffer[buffer_index]
                             buffer_index+=1
                             state=17
+                        if ord(buffer[buffer_index])==39:
+                            buffer_index+=1
+                            state=18
 
 
                     case 1:         #white space
@@ -257,7 +260,9 @@ with open(path,'r') as file:
 
                         buffer_index+=1
                     case 18:
-                        print("char")
+                        print("T_Character: ",buffer[buffer_index])
+                        buffer_index+=2
+                        state=0
                         #char
                     #error
                     case _:
