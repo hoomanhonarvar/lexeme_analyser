@@ -134,9 +134,38 @@ with open(path,'r') as file:
                             T_id+=buffer[buffer_index]
                             buffer_index+=1
                             state=17
+                        #Char
                         if ord(buffer[buffer_index])==39:
                             buffer_index+=1
                             state=18
+                        #(
+                        if ord(buffer[buffer_index])==40:
+                            buffer_index+=1
+                            state=19
+                        #)
+                        if ord(buffer[buffer_index])==41:
+                            buffer_index+=1
+                            state=20
+                        #{
+                        if ord(buffer[buffer_index])==123:
+                            buffer_index+=1
+                            state=21
+                        #}
+                        if ord(buffer[buffer_index])==125:
+                            buffer_index+=1
+                            state=22
+                        #[
+                        if ord(buffer[buffer_index])==91:
+                            buffer_index+=1
+                            state=23
+                        #]
+                        if ord(buffer[buffer_index])==93:
+                            buffer_index+=1
+                            state=24
+                        #,
+                        if ord(buffer[buffer_index])==44:
+                            buffer_index+=1
+                            state=24
 
 
                     case 1:         #white space
@@ -192,12 +221,16 @@ with open(path,'r') as file:
                         buffer_index+=1
                         T_id = T_id + buffer[buffer_index-1 ]
                         if buffer_index==len(buffer):
+
                             print("number",T_id)
                             T_id=""
                         if ord(buffer[buffer_index])>=48 and ord(buffer[buffer_index])<=57:
                             state=3
                         else:
-                            print("number", T_id)
+                            if T_id[0]=="0":
+                                print("T_Hexadicima ", T_id)
+                            else:
+                                print("T_Decimal ",T_id)
                             T_id = ""
                             state=0
 
@@ -217,7 +250,6 @@ with open(path,'r') as file:
                                 state=-1
 
                     case 5:         #=
-
                         if buffer[buffer_index]==61:
                             #==
                             print("T_ROp_E")
@@ -229,8 +261,6 @@ with open(path,'r') as file:
                             else:
                                 print("error")
                                 state=-1
-
-
                     case 6:         #<
                         if buffer[buffer_index] == 62:
                             # <=
@@ -341,11 +371,74 @@ with open(path,'r') as file:
                             state=0
 
                         buffer_index+=1
+                    # char
                     case 18:
                         print("T_Character: ",buffer[buffer_index])
                         buffer_index+=2
                         state=0
-                        #char
+                    #(
+                    case 19:
+                        if ord(buffer[buffer_index])==32 or ord(buffer[buffer_index])==10 or ord(buffer[buffer_index])==9:
+                            print("T_LP")
+                            state=1
+                        else:
+                            print("error")
+                            state=-1
+                    #)
+                    case 20:
+                        if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(
+                                buffer[buffer_index]) == 9:
+                            print("T_GP")
+                            state = 1
+                        else:
+                            print("error")
+                            state = -1
+                    #{
+                    case 21:
+                        if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(
+                                buffer[buffer_index]) == 9:
+                            print("T_LC")
+                            state = 1
+                        else:
+                            print("error")
+                            state = -1
+                    #}
+                    case 22:
+                        if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(
+                                buffer[buffer_index]) == 9:
+                            print("T_RC")
+                            state = 1
+                        else:
+                            print("error")
+                            state = -1
+                    #[
+                    case 23:
+                        if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(
+                                buffer[buffer_index]) == 9:
+                            print("T_LB")
+                            state = 1
+                        else:
+                            print("error")
+                            state = -1
+                    #]
+                    case 24:
+                        if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(
+                                buffer[buffer_index]) == 9:
+                            print("T_RB")
+                            state = 1
+                        else:
+                            print("error")
+                            state = -1
+                    #,
+                    case 25:
+                        if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(
+                                buffer[buffer_index]) == 9:
+                            print("T_Comma")
+                            state = 1
+                        else:
+                            print("error")
+                            state = -1
+
                     #error
                     case _:
                         end=True
