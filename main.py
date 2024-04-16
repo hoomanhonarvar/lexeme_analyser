@@ -203,25 +203,46 @@ with open(path,'r') as file:
 
 
                     case 4:         #>
-                        a=1
-                    case 5:         #=
-                        if buffer[buffer_index]==60:
-                            #>=
+                        if buffer[buffer_index] == 60:
+                            # >=
                             print("T_ROp_GE")
+                            buffer_index+=1
+                        else:
+                            if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(
+                                    buffer[buffer_index]) == 9:
+                                print("T_ROp_G")
+                                state = 1
+                            else:
+                                print("error")
+                                state=-1
+
+                    case 5:         #=
+
                         if buffer[buffer_index]==61:
                             #==
                             print("T_ROp_E")
-                        if buffer[buffer_index]==62:
-                            #<=
-                            print("T_ROp_LE")
-                        if ord(buffer[buffer_index])==32 or ord(buffer[buffer_index])==10 or ord(buffer[buffer_index])==9:
-                            print("T_Assign")
-                            state=1
+                            buffer_index+=1
+                        else:
+                            if ord(buffer[buffer_index])==32 or ord(buffer[buffer_index])==10 or ord(buffer[buffer_index])==9:
+                                print("T_Assign")
+                                state=1
+                            else:
+                                print("error")
+                                state=-1
 
 
-                        a=1
                     case 6:         #<
-                        a=1
+                        if buffer[buffer_index] == 62:
+                            # <=
+                            print("T_ROp_LE")
+                            buffer_index+=1
+                        else:
+                            if ord(buffer[buffer_index])==32 or ord(buffer[buffer_index])==10 or ord(buffer[buffer_index])==9:
+                                print("T_ROp_L")
+                                state=1
+                            else:
+                                print("error")
+                                state=-1
                     case 7:         #!
                         a=1
                     case 8:         #+
