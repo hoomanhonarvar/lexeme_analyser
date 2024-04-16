@@ -53,12 +53,13 @@ with open(path,'r') as file:
             end=False
 
             while not end:
-                print("this is", buffer[buffer_index], ".")
-                print(state)
+                # print("this is", buffer[buffer_index], ".")
+                # print(state)
                 match state:
                     case 0:         #start state
-                        print(ord(buffer[buffer_index]))
-
+                        print("buffer ascii",ord(buffer[buffer_index]))
+                        print("len buffer:",len(buffer))
+                        print("buffer index: ",buffer_index)
                         #error
                         if buffer_index == len(buffer) :
                             state=-1
@@ -68,7 +69,7 @@ with open(path,'r') as file:
                             state=1
                         #id
                         if ((ord(buffer[buffer_index])>=65 and ord(buffer[buffer_index])<=90) or (ord(buffer[buffer_index])>=97 and ord(buffer[buffer_index])<=122) or ord(buffer[buffer_index])==95):
-                            print(buffer[buffer_index])
+                            # print(buffer[buffer_index])
                             state=2
                             buffer_index+=1
 
@@ -128,6 +129,7 @@ with open(path,'r') as file:
                             state=16
                             buffer_index+=1
                         #string
+
                         if ord(buffer[buffer_index])==34:
                             T_id+=buffer[buffer_index]
                             buffer_index+=1
@@ -223,21 +225,61 @@ with open(path,'r') as file:
                     case 7:         #!
                         a=1
                     case 8:         #+
-                        a=1
+                        if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(buffer[buffer_index]) == 9:
+                            print("T_AOp_PL")
+                            state=0
+                        else:
+                            print("error")
+                            state=-1
                     case 9:         #-
                         a=1
                     case 10:        #*
-                        a=1
+                        if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(buffer[buffer_index]) == 9:
+                            print("T_AOp_ML")
+                            state=0
+                        else:
+                            print("error")
+                            state=-1
                     case 11:        #/
-                        a=1
+                        if ord(buffer[buffer_index])==47:
+                            print("comment")
+                            break
+                        if ord(buffer[buffer_index])==32 or ord(buffer[buffer_index])==10 or ord(buffer[buffer_index])==9:
+                            state=1
+                            print("T_AOp_DV")
+                        else:
+                            print("error")
+                            state=-1
                     case 12:        #%
-                        a=1
+                        if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(buffer[buffer_index]) == 9:
+                            print("T_AOp_RM")
+                            state=0
+                        else:
+                            print("error")
+                            state=-1
                     case 13:        #&
-                        a=1
+                        if ord(buffer[buffer_index])==38 and (ord(buffer[buffer_index+1]) == 32 or ord(buffer[buffer_index+1]) == 10 or ord(buffer[buffer_index+1]) == 9):
+                            print("T_LOp_AND")
+                            buffer_index+=1
+                            state=0
+                        else:
+                            print("error")
+                            state=-1
+
+
                     case 14:        #|
-                        a=1
+                        if ord(buffer[buffer_index])==124 and (ord(buffer[buffer_index+1]) == 32 or ord(buffer[buffer_index+1]) == 10 or ord(buffer[buffer_index+1]) == 9):
+                            print("T_LOp_OR")
+                            buffer_index+=1
+                            state=0
+                        else:
+                            print("error")
+                            state=-1
                     case 15:        #zero
-                        a=1
+                        if ord(buffer[buffer_index])==120:
+                            T_id+="0x"
+                            buffer_index+=1
+                            state=3
                     case 16:        #;
                         if buffer_index==len(buffer):
                             print("T_Semicolon")
