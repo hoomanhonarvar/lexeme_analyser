@@ -1,7 +1,7 @@
 int test_function(int a, int b, bool c){
 	// this is a function
-	if (c == true){
-		return a + b ;
+	if (c==true){
+		return a+b ;
 	}
 	else {
 		return a - b ;
@@ -11,8 +11,8 @@ int test_function(int a, int b, bool c){
 int main (){
 	bool add = true ;
 	char _assign1 = '=';
-	char String_1 [] = " + " ;
-	char String_2 [] = " - " ;
+	char String_1[] = "+" ;
+	char String_2 [] = "-" ;
 	for(int i = 0; i <= (+10 / 2); i = i + 1){
 		for (int j = 0x0 ; j != (5 * -1)  ; j = j - 1){
 			print(i);
