@@ -301,13 +301,25 @@ with open(path,'r') as file:
                             buffer_index+=1
                             state=0
                     case 15:        #zero
-                        if ord(buffer[buffer_index])==120:
+                        if ord(buffer[buffer_index])==120 or ord(buffer[buffer_index])==88:
                             T_id+="0x"
                             buffer_index+=1
-                            state=3
                         else:
-                            buffer_index-=1
-                            state=3
+                            if (ord(buffer[buffer_index])>=65 and ord(buffer[buffer_index])<=70)or(ord(buffer[buffer_index])>=97 and ord(buffer[buffer_index])<=102) or(ord(buffer[buffer_index])>=48 and ord(buffer[buffer_index])<=57):
+                                T_id+=buffer[buffer_index]
+                                buffer_index+=1
+
+                            else:
+                                if len(T_id)>=2:
+
+                                    print("T_Hexadecimal ",T_id)
+                                    T_id=""
+                                    state=0
+                                else:
+                                    T_id=""
+                                    buffer_index-=1
+                                    state=3
+
                     case 16:        #;
                         if buffer_index==len(buffer):
                             print("T_Semicolon")
