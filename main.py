@@ -4,37 +4,37 @@ path=sys.argv[1]
 # path="./test.c"
 
 
+data=[]
+main_symbol_table = pd.DataFrame(data, columns=[ 'word', 'name', 'type','line'])
+#adding key words to symbol table
 
+Bool={"word":"bool","name":"T_Bool","type":"keyword","line":0}
+Int={"word":"int","name":"T_Int","type":"keyword","line":0}
+Char={"word":"char","name":"T_Char","type":"keyword","line":0}
+false={"word":"false","name":"T_False","type":"keyword","line":0}
+true={"word":"true","name":"T_True","type":"keyword","line":0}
+If={"word":"if","name":"T_If","type":"keyword","line":0}
+Else={"word":"else","name":"T_Else","type":"keyword","line":0}
+For={"word":"for","name":"T_For","type":"keyword","line":0}
+Break={"word":"break","name":"T_Break","type":"keyword","line":0}
+Print={"word":"print","name":"T_Print","type":"keyword","line":0}
+Return={"word":"return","name":"T_Return","type":"keyword","line":0}
+Continue={"word":"contintue","name":"T_Contintue","type":"keyword","line":0}
+
+main_symbol_table=main_symbol_table._append(Bool,ignore_index=True)
+main_symbol_table=main_symbol_table._append(Int,ignore_index=True)
+main_symbol_table=main_symbol_table._append(Char,ignore_index=True)
+main_symbol_table=main_symbol_table._append(false,ignore_index=True)
+main_symbol_table=main_symbol_table._append(true,ignore_index=True)
+main_symbol_table=main_symbol_table._append(Break,ignore_index=True)
+main_symbol_table=main_symbol_table._append(Else,ignore_index=True)
+main_symbol_table=main_symbol_table._append(If,ignore_index=True)
+main_symbol_table=main_symbol_table._append(Print,ignore_index=True)
+main_symbol_table=main_symbol_table._append(Return,ignore_index=True)
+main_symbol_table=main_symbol_table._append(Continue,ignore_index=True)
+main_symbol_table=main_symbol_table._append(For,ignore_index=True)
 with open(path,'r') as file:
-    data=[]
-    main_symbol_table = pd.DataFrame(data, columns=[ 'word', 'name', 'type','line'])
-    #adding key words to symbol table
 
-    Bool={"word":"bool","name":"T_Bool","type":"keyword","line":0}
-    Int={"word":"int","name":"T_Int","type":"keyword","line":0}
-    Char={"word":"char","name":"T_Char","type":"keyword","line":0}
-    false={"word":"false","name":"T_False","type":"keyword","line":0}
-    true={"word":"true","name":"T_True","type":"keyword","line":0}
-    If={"word":"if","name":"T_If","type":"keyword","line":0}
-    Else={"word":"else","name":"T_Else","type":"keyword","line":0}
-    For={"word":"for","name":"T_For","type":"keyword","line":0}
-    Break={"word":"break","name":"T_Break","type":"keyword","line":0}
-    Print={"word":"print","name":"T_Print","type":"keyword","line":0}
-    Return={"word":"return","name":"T_Return","type":"keyword","line":0}
-    Continue={"word":"contintue","name":"T_Contintue","type":"keyword","line":0}
-
-    main_symbol_table=main_symbol_table._append(Bool,ignore_index=True)
-    main_symbol_table=main_symbol_table._append(Int,ignore_index=True)
-    main_symbol_table=main_symbol_table._append(Char,ignore_index=True)
-    main_symbol_table=main_symbol_table._append(false,ignore_index=True)
-    main_symbol_table=main_symbol_table._append(true,ignore_index=True)
-    main_symbol_table=main_symbol_table._append(Break,ignore_index=True)
-    main_symbol_table=main_symbol_table._append(Else,ignore_index=True)
-    main_symbol_table=main_symbol_table._append(If,ignore_index=True)
-    main_symbol_table=main_symbol_table._append(Print,ignore_index=True)
-    main_symbol_table=main_symbol_table._append(Return,ignore_index=True)
-    main_symbol_table=main_symbol_table._append(Continue,ignore_index=True)
-    main_symbol_table=main_symbol_table._append(For,ignore_index=True)
     line =0
     while True:
 
@@ -45,7 +45,6 @@ with open(path,'r') as file:
             line+=1
             T_id=""
             state=0
-            number_token=0
             buffer_index=0
             end=False
 
@@ -395,4 +394,4 @@ with open(path,'r') as file:
                         end=True
                         print("error")
 
-            print(main_symbol_table.to_string())
+print(main_symbol_table.to_string())
