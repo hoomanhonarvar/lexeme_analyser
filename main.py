@@ -1,7 +1,7 @@
 import sys
 import pandas as pd
-# path=sys.argv[1]
-path="./test.c"
+path=sys.argv[1]
+# path="./test.c"
 
 
 
@@ -35,11 +35,6 @@ with open(path,'r') as file:
     main_symbol_table=main_symbol_table._append(Return,ignore_index=True)
     main_symbol_table=main_symbol_table._append(Continue,ignore_index=True)
     main_symbol_table=main_symbol_table._append(For,ignore_index=True)
-    # print(main_symbol_table.loc[:,"word"].tolist())
-    # for i in main_symbol_table.loc[:,"word"].tolist():
-    #     print(i)
-
-    # print(main_symbol_table)
     line =0
     while True:
 
@@ -48,7 +43,6 @@ with open(path,'r') as file:
             break
         else:
             line+=1
-            print(buffer)
             T_id=""
             state=0
             number_token=0
@@ -56,12 +50,7 @@ with open(path,'r') as file:
             end=False
 
             while not end:
-                # print("this is", buffer[buffer_index], ".")
-                # print(state)
-                # print("buffer ascii", ord(buffer[buffer_index]))
-                # print("len buffer:", len(buffer))
-                # print("buffer index: ", buffer_index)
-                # print(buffer[buffer_index])
+
                 match state:
                     case 0:         #start state
 
@@ -77,7 +66,6 @@ with open(path,'r') as file:
                             state=1
                         #id
                         if ((ord(buffer[buffer_index])>=65 and ord(buffer[buffer_index])<=90) or (ord(buffer[buffer_index])>=97 and ord(buffer[buffer_index])<=122) or ord(buffer[buffer_index])==95):
-                            # print(buffer[buffer_index])
                             state=2
 
                         #number
@@ -147,7 +135,6 @@ with open(path,'r') as file:
                             state=19
                         #)
                         if ord(buffer[buffer_index])==41:
-                            print("hello")
                             state=20
                         #{
                         if ord(buffer[buffer_index])==123:
@@ -171,12 +158,12 @@ with open(path,'r') as file:
                         buffer_index+=1
                         if buffer_index == len(buffer):
                             #send token
-                            print("T_Whitespace")
+                            print(line," :T_Whitespace")
                             break
                         if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(buffer[buffer_index]) == 9:
                             state = 1
                         else:
-                            print("T_WhiteSpace")
+                            print(line," :T_Whitespace")
                             state=0
 
 
@@ -193,13 +180,12 @@ with open(path,'r') as file:
 
                                 id = {"word": T_id, "name": "T_Id", "type": "id","line":line}
                                 main_symbol_table = main_symbol_table._append(id, ignore_index=True)
-                                print(len(main_symbol_table.index) - 1, T_id)
+                                print(line," :",len(main_symbol_table.index) - 1, T_id)
                             else:
                                 for i in main_symbol_table.loc[:11, ["word", "name"]].values.tolist():
                                     if i[0] == T_id:
-                                        print(i[1])
+                                        print(line," :",i[1])
                             T_id = ""
-                            # print(main_symbol_table)
                             state=0
 
                     case 3:         #number
@@ -207,18 +193,18 @@ with open(path,'r') as file:
                         T_id = T_id + buffer[buffer_index-1 ]
                         if buffer_index==len(buffer):
 
-                            print("T_Decimal",T_id)
+                            print(line, " :T_Decimal",T_id)
                             T_id=""
                         if ord(buffer[buffer_index])>=48 and ord(buffer[buffer_index])<=57:
                             state=3
                         else:
                             if len(T_id)>1:
                                 if T_id[0]=="0" and T_id[1]=="x":
-                                    print("T_Hexadicimal ", T_id)
+                                    print(line," :T_Hexadicimal ", T_id)
                                 else:
-                                    print("T_Decimal",T_id)
+                                    print(line," :T_Decimal",T_id)
                             else:
-                                print("T_Decimal ",T_id)
+                                print(line," :T_Decimal ",T_id)
                             T_id = ""
                             state=0
 
@@ -226,12 +212,12 @@ with open(path,'r') as file:
                     case 4:         #>
                         if buffer[buffer_index] == 60:
                             # >=
-                            print("T_ROp_GE")
+                            print(line," :T_ROp_GE")
                             buffer_index+=1
                         else:
                             if ord(buffer[buffer_index]) == 32 or ord(buffer[buffer_index]) == 10 or ord(
                                     buffer[buffer_index]) == 9:
-                                print("T_ROp_G")
+                                print(line, " :T_ROp_G")
                                 state = 1
                             else:
                                 state=0
@@ -240,56 +226,56 @@ with open(path,'r') as file:
                         buffer_index+=1
                         if ord(buffer[buffer_index])==61:
                             #==
-                            print("T_ROp_E")
+                            print(line," :T_ROp_E")
                             buffer_index+=1
                         else:
-                            print("T_Assign")
+                            print(line," :T_Assign")
                         state=0
 
                     case 6:         #<
                         if buffer[buffer_index] == 62:
                             # <=
-                            print("T_ROp_LE")
+                            print(line," :T_ROp_LE")
                             buffer_index+=1
                         else:
-                            print("T_ROp_L")
+                            print(line," :T_ROp_L")
                             state=0
                     case 7:         #!
                         if buffer[buffer_index] == 61:
                             # !=
-                            print("T_ROp_NE")
+                            print(line," :T_ROp_NE")
                             buffer_index += 1
                         else:
-                            print("T_LOp_NOT")
+                            print(line," :T_LOp_NOT")
                             state=0
                     case 8:         #+
-                            print("T_AOp_PL")
+                            print(line," :T_AOp_PL")
                             state=0
                     case 9:         #-
                         if ord(buffer[buffer_index])>=49 and ord(buffer[buffer_index])<=57:
                             T_id+="-"
                             state=3
                         else:
-                            print("T_AOp_MN")
+                            print(line," :T_AOp_MN")
                             state=0
                     case 10:        #*
-                            print("T_AOp_ML")
+                            print(line," :T_AOp_ML")
                             state=0
 
                     case 11:        #/
                         if ord(buffer[buffer_index])==47:
-                            print("T_Comment")
+                            print(line," :T_Comment")
                             break
                         else:
                             state=0
-                            print("T_AOp_DV")
+                            print(line," :T_AOp_DV")
 
                     case 12:        #%
-                        print("T_AOp_RM")
+                        print(line," :T_AOp_RM")
                         state=0
                     case 13:        #&
                         if ord(buffer[buffer_index])==38 :
-                            print("T_LOp_AND")
+                            print(line," :T_LOp_AND")
                             buffer_index+=1
                             state=0
 
@@ -297,7 +283,7 @@ with open(path,'r') as file:
 
                     case 14:        #|
                         if ord(buffer[buffer_index])==124 :
-                            print("T_LOp_OR")
+                            print(line," :T_LOp_OR")
                             buffer_index+=1
                             state=0
                     case 15:        #zero
@@ -312,7 +298,7 @@ with open(path,'r') as file:
                             else:
                                 if len(T_id)>=2:
 
-                                    print("T_Hexadecimal ",T_id)
+                                    print(line," :T_Hexadecimal ",T_id)
                                     T_id=""
                                     state=0
                                 else:
@@ -322,10 +308,10 @@ with open(path,'r') as file:
 
                     case 16:        #;
                         if buffer_index==len(buffer):
-                            print("T_Semicolon")
+                            print(line, " :T_Semicolon")
                             break
                         else:
-                            print("T_Semicolon")
+                            print(line, " :T_Semicolon")
                             state=0
                         #"
                     case 17:
@@ -339,7 +325,7 @@ with open(path,'r') as file:
                         elif ord(buffer[buffer_index+1])==92:
                             T_id+="\\"
                         if ord(buffer[buffer_index])==34  and ord(buffer[buffer_index-1])!=92:
-                            print("T_String  " , T_id)
+                            print(line, " :T_String  " , T_id)
                             id = {"word": T_id, "name": "T_String", "type": "String","line":line}
                             main_symbol_table = main_symbol_table._append(id, ignore_index=True)
                             state=0
@@ -354,7 +340,7 @@ with open(path,'r') as file:
                             buffer_index += 1
                             T_id += buffer[buffer_index]
                             buffer_index += 1
-                            print("T_Character: ",T_id)
+                            print(line," :T_Character: ",T_id)
                             T_id=""
                         else:
                             T_id += buffer[buffer_index]
@@ -365,42 +351,42 @@ with open(path,'r') as file:
                             buffer_index += 1
                             T_id += buffer[buffer_index]
                             buffer_index += 1
-                            print("T_Character: ", T_id)
+                            print(line, " :T_Character: ", T_id)
                             T_id = ""
                         state=0
                     #(
                     case 19:
-                        print("T_LP")
+                        print(line, " :T_LP")
                         buffer_index += 1
                         state = 0
                     #)
                     case 20:
-                        print("T_RP")
+                        print(line," :T_RP")
                         buffer_index += 1
                         state = 0
                     #{
                     case 21:
-                        print("T_LC")
+                        print(line," :T_LC")
                         buffer_index += 1
                         state = 0
                     #}
                     case 22:
-                        print("T_RC")
+                        print(line," :T_RC")
                         buffer_index += 1
                         state = 0
                     #[
                     case 23:
-                        print("T_LB")
+                        print(line," :T_LB")
                         buffer_index += 1
                         state = 0
                     #]
                     case 24:
-                        print("T_RB")
+                        print(line," :T_RB")
                         buffer_index += 1
                         state = 0
                     #,
                     case 25:
-                        print("T_Comma")
+                        print(line," :T_Comma")
                         buffer_index += 1
                         state = 0
 
@@ -409,11 +395,4 @@ with open(path,'r') as file:
                         end=True
                         print("error")
 
-
-            #whitespace
-
-            #id
-
-            #number decimal
-
-            #number Hex
+            print(main_symbol_table.to_string())
